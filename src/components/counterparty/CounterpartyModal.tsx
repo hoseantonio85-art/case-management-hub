@@ -4,16 +4,15 @@ import { Button } from "@/components/ui/button";
 import {
   AlertTriangle,
   ShieldCheck,
-  Search,
   ChevronRight,
   ChevronDown,
   Pencil,
-  CheckCircle2,
   XCircle,
   Clock,
   Calendar,
   X,
 } from "lucide-react";
+
 import type {
   Counterparty,
   Contract,
