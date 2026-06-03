@@ -217,38 +217,35 @@ export function CounterpartyModal({
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="max-h-[92vh] w-[96vw] max-w-5xl gap-0 overflow-y-auto p-0 [&>button]:hidden">
-          {/* Compact header */}
-          <div className="border-b border-border bg-white px-6 pt-5 pb-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-900">
-                    {counterparty.tag}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground">ИНН {counterparty.inn}</span>
+          {/* Header */}
+          {(() => {
+            const tone = getToneForTag(counterparty.tag);
+            const styles = toneStyles[tone];
+            return (
+              <div className={`relative border-b border-border px-7 pt-6 pb-5 ${styles.gradient}`}>
+                <button
+                  onClick={() => onOpenChange(false)}
+                  className="absolute right-5 top-5 rounded-full bg-white/70 p-1.5 text-muted-foreground backdrop-blur hover:bg-white"
+                  aria-label="Закрыть"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+                <span className={`inline-flex w-fit items-center rounded-full px-2.5 py-1 text-[11px] font-medium ${styles.badge}`}>
+                  {counterparty.tag}
+                </span>
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{counterparty.name}</h2>
+                <div className="mt-1 text-sm text-muted-foreground">{counterparty.inn}</div>
+                <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <DebtCard label="Общая задолженность" value={counterparty.totalDebt} />
+                  <DebtCard
+                    label="Просроченная задолженность"
+                    value={`${totalOverdue.toFixed(1)} млн. ₽`}
+                    accent={totalOverdue > 0}
+                  />
                 </div>
-                <h2 className="mt-1.5 text-xl font-semibold tracking-tight">{counterparty.name}</h2>
               </div>
-              <button
-                onClick={() => onOpenChange(false)}
-                className="rounded-md p-1 text-muted-foreground hover:bg-muted"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-5">
-              <Stat label="Задолженность" value={counterparty.totalDebt} />
-              <Stat
-                label="Просрочено"
-                value={`${totalOverdue.toFixed(1)} млн. ₽`}
-                accent={totalOverdue > 0}
-              />
-              <Stat label="Открытые сигналы" value={String(pending.length + verification.length)} />
-              <Stat label="Этап взыскания" value={currentStage?.stage ?? "—"} />
-              <Stat label="Обновлено" value={counterparty.lastUpdate} />
-            </div>
-          </div>
+            );
+          })()}
 
           <div className="space-y-6 bg-[#F6F6F4] px-6 py-6">
             {/* Section: Requires decision */}
