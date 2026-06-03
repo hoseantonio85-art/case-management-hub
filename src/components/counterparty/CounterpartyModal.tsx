@@ -24,6 +24,7 @@ import type {
 import { RiskDrawer, type DecisionKind, type RiskSavePayload } from "./RiskDrawer";
 import { ContractDrawer } from "./ContractDrawer";
 import { DebtStepper } from "./DebtStepper";
+import { getToneForTag, toneStyles } from "./header-theme";
 
 const priorityBadge: Record<string, { label: string; cls: string }> = {
   high: { label: "Высокий приоритет", cls: "bg-amber-100 text-amber-900" },
