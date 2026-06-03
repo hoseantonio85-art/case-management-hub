@@ -52,6 +52,7 @@ export function CounterpartyModal({
   const [contractDrawer, setContractDrawer] = useState<Contract | null>(null);
   const [stepperError, setStepperError] = useState<string | null>(null);
   const [showAllPending, setShowAllPending] = useState(false);
+  const [debtDrawerOpen, setDebtDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (counterparty && open) {
