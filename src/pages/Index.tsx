@@ -314,19 +314,20 @@ export default function Index() {
 
                 <div className="flex items-center gap-6">
                   <ul className="space-y-2 text-sm">
-                    {donutSegments.map((s) => (
+                    {(filter ? categoryPalette[filter].segments : defaultSegments).map((s) => (
                       <li key={s.key} className="flex items-center gap-2">
                         <span
                           className="inline-block h-2 w-2 rounded-full"
-                          style={{ background: s.color, opacity: filter && filter !== s.key ? 0.3 : 1 }}
+                          style={{ background: s.color }}
                         />
-                        <span className={filter && filter !== s.key ? "text-muted-foreground" : ""}>
-                          {s.label}
-                        </span>
+                        <span>{s.label}</span>
                       </li>
                     ))}
                   </ul>
-                  <Donut active={filter} />
+                  <Donut
+                    amount={filter ? categoryPalette[filter].amount : "4,7"}
+                    segments={filter ? categoryPalette[filter].segments : defaultSegments}
+                  />
                 </div>
               </div>
             </div>
