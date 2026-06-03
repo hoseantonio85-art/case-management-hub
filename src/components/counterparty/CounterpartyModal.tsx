@@ -442,9 +442,10 @@ export function CounterpartyModal({
             </div>
 
             {/* Right column: meta */}
-            <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start">
+            <aside className="space-y-4 lg:sticky lg:top-4 lg:self-start lg:mt-[40px]">
               <DebtSummaryCard steps={steps} onOpenDetails={() => setDebtDrawerOpen(true)} />
             </aside>
+
           </div>
         </DialogContent>
       </Dialog>
