@@ -346,7 +346,7 @@ export default function Index() {
   }, [byCategory, riskFilter, showRiskChips]);
 
   return (
-    <div className="min-h-screen bg-[#F6F6F4]">
+    <div className="min-h-screen bg-white">
       <div className="flex">
         {/* Sidebar */}
         <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r border-border bg-white px-4 py-5 lg:flex">
