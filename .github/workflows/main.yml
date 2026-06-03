@@ -1,7 +1,7 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Триггер: запускать при пуше в main (или master)
+  # Триггер: запускать при пуше в main
   push:
     branches: [ "main" ]
   # Также можно запускать вручную
@@ -27,26 +27,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      # Заменяем setup-node на официальный экшен для Bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: '20' # Укажи версию, с которой работает твой проект
-          cache: 'npm'
+          bun-version: latest
 
       - name: Install dependencies
-        run: npm install
+        run: bun install
 
       - name: Build
-        run: npm run build
+        run: bun run build
 
-      # Шаг, который загружает сборку на GitHub Pages
+      # Шаг, который настраивает GitHub Pages
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Укажи путь к папке, которую нужно задеплоить
+          path: './dist' # Vite по умолчанию собирает проект в папку dist
 
       - name: Deploy to GitHub Pages
         id: deployment
