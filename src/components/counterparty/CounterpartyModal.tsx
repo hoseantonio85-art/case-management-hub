@@ -381,7 +381,7 @@ export function CounterpartyModal({
                     </div>
                   ))}
                   {dismissed.map((r) => (
-                    <div key={r.id} className="rounded-xl border border-border bg-muted/40 p-4">
+                    <div key={r.id} className="rounded-xl border border-border bg-slate-50/60 p-4">
                       <DecisionHeader
                         icon={<XCircle className="h-4 w-4" />}
                         iconCls="bg-muted text-muted-foreground"
