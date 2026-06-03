@@ -139,6 +139,7 @@ export function ContractDrawer({
             <ArrowRight className="mr-2 h-4 w-4" /> Перевести этап взыскания
           </Button>
         </div>
+        </div>
       </SheetContent>
     </Sheet>
   );
@@ -152,3 +153,15 @@ function Row({ label, value, valueClass = "" }: { label: string; value: string; 
     </div>
   );
 }
+
+function DebtCard({ label, value, accent }: { label: string; value: string; accent?: boolean }) {
+  return (
+    <div className="rounded-xl border border-border bg-white px-4 py-3">
+      <div className="text-xs text-muted-foreground">{label}</div>
+      <div className={`mt-1 text-lg font-semibold ${accent ? "text-rose-600" : "text-foreground"}`}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
