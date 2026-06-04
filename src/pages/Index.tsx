@@ -423,13 +423,13 @@ export default function Index() {
               </div>
             )}
 
-            <div className="overflow-hidden rounded-xl border border-border bg-white">
+            <div className="space-y-2.5">
               {filtered.length === 0 && (
-                <div className="p-8 text-center text-sm text-muted-foreground">
+                <div className="rounded-2xl border border-border bg-white p-8 text-center text-sm text-muted-foreground">
                   Нет дебиторов в этой категории
                 </div>
               )}
-              {filtered.map((c, idx) => {
+              {filtered.map((c) => {
                 const stage = c.collection.find((s) => s.status === "current")?.stage ?? "—";
                 const types = Array.from(new Set(c.risks.map((r) => r.type)));
                 const shownIcons = types.slice(0, 3);
@@ -438,9 +438,7 @@ export default function Index() {
                   <button
                     key={c.id}
                     onClick={() => setActive(c)}
-                    className={`flex w-full items-center gap-4 px-5 py-4 text-left transition hover:bg-slate-50 ${
-                      idx > 0 ? "border-t border-border" : ""
-                    }`}
+                    className="flex w-full items-center gap-4 rounded-2xl border border-[#E5E7EB] bg-white px-5 py-4 text-left transition hover:border-slate-300 hover:shadow-sm"
                   >
                     <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                       <div className="flex flex-wrap items-center gap-1.5">
