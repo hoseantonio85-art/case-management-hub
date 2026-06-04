@@ -453,8 +453,8 @@ export function ContractDrawer({
                   <ChevronUp className="mr-1.5 h-3.5 w-3.5" /> Скрыть
                 </>
               ) : (
-                <>
-                  <Plus className="mr-1.5 h-3.5 w-3.5" /> Добавить
+              <>
+                  <Plus className="mr-1.5 h-3.5 w-3.5" /> Добавить просрочку
                 </>
               )}
             </Button>
