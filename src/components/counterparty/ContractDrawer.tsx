@@ -247,16 +247,25 @@ export function ContractDrawer({
   };
 
   const handleAddOverdue = () => {
-    if (!amount || !occurDate) return;
+    const amountNum = Number(amount);
+    if (!amount || !Number.isFinite(amountNum) || amountNum <= 0) {
+      setOverdueError("Введите сумму просрочки");
+      return;
+    }
+    if (!occurDate || !parseDDMMYYYY(occurDate)) {
+      setOverdueError("Укажите дату возникновения просрочки");
+      return;
+    }
+    setOverdueError(null);
     const days = computedDays ?? 0;
     const record: OverdueRecord = {
       date: occurDate,
-      amount: Number(amount) / 1_000_000,
+      amount: amountNum / 1_000_000,
       days,
       comment: overdueComment || undefined,
     };
     onAddOverdue(contract.id, record);
-    setLocalOverdues((prev) => [{ ...record, source: "Ручной ввод" }, ...prev]);
+    setLocalOverdues((prev) => [{ ...record, source: DEFAULT_RESPONSIBLE }, ...prev]);
     setHistory((h) => [
       {
         date: formatDDMMYYYY(TODAY),
