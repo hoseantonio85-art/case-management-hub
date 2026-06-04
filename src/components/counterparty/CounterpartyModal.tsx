@@ -711,8 +711,21 @@ export function CounterpartyModal({
           steps={steps}
           stepAnim={stepAnim}
           open={debtDrawerOpen}
-          onOpenChange={setDebtDrawerOpen}
+          onOpenChange={(o) => {
+            setDebtDrawerOpen(o);
+            if (!o) setStepperError(null);
+          }}
           onAdvance={advanceStage}
+          onRollback={rollbackStage}
+          onFieldChange={handleFieldChange}
+          completedFields={completedFields}
+          history={history}
+          summary={{
+            overdueAmount: `${totalOverdue.toFixed(1)} млн. ₽`,
+            overdueStartDate,
+            overdueDays: maxOverdueDays,
+            responsible: "Михайлова Екатерина",
+          }}
           error={stepperError}
         />
 
