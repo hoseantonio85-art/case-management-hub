@@ -744,6 +744,8 @@ export function CounterpartyModal({
 
         <ContractDrawer
           counterpartyName={counterparty.name}
+          caseStatusLabel={counterparty.tag}
+          confirmedRisks={confirmed.map((r) => r.type)}
           contract={contractDrawer}
           measures={allMeasures}
           open={!!contractDrawer}
