@@ -146,6 +146,57 @@ export function CounterpartyModal({
         };
       }),
     );
+
+    if (payload.kind === "dismiss") {
+      setNotification({
+        tone: "info",
+        text: "Риск снят. Этап работы с задолженностью не изменился.",
+      });
+      return;
+    }
+    if (payload.kind === "verify") {
+      setNotification({
+        tone: "info",
+        text: "Сигнал отправлен на дополнительную проверку. Этап взыскания не изменился.",
+      });
+      return;
+    }
+
+    // confirm: try to advance collection process
+    setSteps((prev) => {
+      const titles = prev.map((s) => s.title);
+      const target = pickFurthestStepTitle(payload.measures, titles);
+      const currentIdx = prev.findIndex((s) => s.status === "current");
+      const targetIdx = target ? titles.indexOf(target) : -1;
+      if (target == null || targetIdx === -1 || targetIdx <= currentIdx) {
+        setNotification({
+          tone: "success",
+          text: "Риск подтвержден. Этап работы с задолженностью не изменился.",
+        });
+        return prev;
+      }
+      const next = prev.map((s, i) => {
+        if (i < targetIdx) return { ...s, status: "done" as const, overdue: false };
+        if (i === targetIdx)
+          return {
+            ...s,
+            status: "current" as const,
+            startDate: new Date().toLocaleDateString("ru-RU"),
+            sla: s.sla ?? "7 дней",
+            plannedDate:
+              s.plannedDate ?? new Date(Date.now() + 7 * 86400000).toLocaleDateString("ru-RU"),
+            overdue: false,
+            nextAction: s.nextAction ?? "Запланировать следующее действие",
+          };
+        return { ...s, status: "upcoming" as const };
+      });
+      setUpdatedStepId(next[targetIdx].id);
+      setNotification({
+        tone: "success",
+        text: `Риск подтвержден. Новый этап работы с задолженностью: ${target}`,
+      });
+      return next;
+    });
   };
 
   const advanceStage = () => {
