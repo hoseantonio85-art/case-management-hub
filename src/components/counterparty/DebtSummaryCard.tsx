@@ -13,15 +13,24 @@ export function DebtSummaryCard({
   onOpenDetails: () => void;
 }) {
   const currentIdx = steps.findIndex((s) => s.status === "current");
-  const items: { step: CollectionSubStep; kind: "current" | "next" }[] = [];
-  if (currentIdx !== -1) {
-    items.push({ step: steps[currentIdx], kind: "current" });
-    for (let i = currentIdx + 1; i < steps.length && items.length < 3; i++) {
-      items.push({ step: steps[i], kind: "next" });
-    }
-  } else {
-    steps.slice(0, 3).forEach((s) => items.push({ step: s, kind: "next" }));
-  }
+  // Resolve a window of 3 step indices centered on the current step,
+  // clamped to the array edges. Falls back to [0,1,2] if no current step.
+  const anchor = currentIdx === -1 ? 0 : currentIdx;
+  const n = steps.length;
+  let start = anchor - 1;
+  if (start < 0) start = 0;
+  if (start + 3 > n) start = Math.max(0, n - 3);
+  const visibleIndices: number[] = [];
+  for (let i = start; i < Math.min(start + 3, n); i++) visibleIndices.push(i);
+
+  type Kind = "previous" | "current" | "next";
+  const items = visibleIndices.map<{ step: CollectionSubStep; kind: Kind; index: number }>(
+    (idx) => ({
+      step: steps[idx],
+      index: idx,
+      kind: idx < anchor ? "previous" : idx === anchor ? "current" : "next",
+    }),
+  );
 
   const animating = !!stepAnim;
   const isForward = stepAnim?.direction === "forward";
@@ -43,23 +52,25 @@ export function DebtSummaryCard({
       <div className="space-y-0">
         {items.map((it, i) => {
           const isCurrent = it.kind === "current";
+          const isPrev = it.kind === "previous";
           const overdue = isCurrent && it.step.overdue;
           const isLast = i === items.length - 1;
           const animateThis = isCurrent && animating;
+          const dotCls = isCurrent
+            ? overdue
+              ? "border-amber-500 text-amber-700 bg-white"
+              : "border-rose-400 text-rose-600 bg-white"
+            : isPrev
+              ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+              : "border-border bg-white text-muted-foreground";
           return (
             <div key={it.step.id} className="relative flex gap-3">
               <div className="flex flex-col items-center">
                 <div
-                  key={`dot-${stepAnim?.tick ?? "static"}-${i}`}
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 text-[11px] font-semibold transition-transform duration-500 ${
-                    isCurrent
-                      ? overdue
-                        ? "border-amber-500 text-amber-700"
-                        : "border-rose-400 text-rose-600"
-                      : "border-border text-muted-foreground"
-                  } ${animateThis ? "scale-110" : "scale-100"}`}
+                  key={`dot-${stepAnim?.tick ?? "static"}-${it.index}`}
+                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 text-[11px] font-semibold transition-transform duration-500 ${dotCls} ${animateThis ? "scale-110" : "scale-100"}`}
                 >
-                  {i + 1}
+                  {it.index + 1}
                 </div>
                 {!isLast && <div className="my-1 w-px flex-1 bg-border" />}
               </div>
@@ -67,7 +78,11 @@ export function DebtSummaryCard({
                 <div
                   key={`title-${it.step.id}-${isCurrent ? stepAnim?.tick ?? "static" : "static"}`}
                   className={`text-sm leading-tight ${
-                    isCurrent ? "font-semibold text-foreground" : "text-muted-foreground"
+                    isCurrent
+                      ? "font-semibold text-foreground"
+                      : isPrev
+                        ? "text-muted-foreground line-through decoration-muted-foreground/40"
+                        : "text-muted-foreground"
                   } ${animateThis ? "animate-fade-in" : ""}`}
                 >
                   {it.step.title}
@@ -85,10 +100,12 @@ export function DebtSummaryCard({
                     ) : (
                       "В работе"
                     )
-                  ) : i === 1 ? (
-                    it.step.sla ? `План: ${it.step.sla}` : "Следующий этап"
+                  ) : isPrev ? (
+                    "Пройдено"
+                  ) : it.step.sla ? (
+                    `План: ${it.step.sla}`
                   ) : (
-                    "Далее"
+                    "Следующий этап"
                   )}
                 </div>
               </div>
