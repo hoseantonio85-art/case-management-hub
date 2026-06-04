@@ -25,7 +25,12 @@ import type {
 import { RiskDrawer, type DecisionKind, type RiskSavePayload } from "./RiskDrawer";
 import { ContractDrawer } from "./ContractDrawer";
 import { DebtSummaryCard } from "./DebtSummaryCard";
-import { DebtProcessDrawer } from "./DebtProcessDrawer";
+import {
+  DebtProcessDrawer,
+  type DebtHistoryEntry,
+  type CompletedFields,
+} from "./DebtProcessDrawer";
+import { stepMetaByTitle } from "@/lib/debt-process";
 import { getToneForTag, toneStyles } from "./header-theme";
 import { riskMeta } from "./risk-meta";
 
@@ -60,6 +65,8 @@ export function CounterpartyModal({
   const [stepAnim, setStepAnim] = useState<
     { direction: "forward" | "backward"; tick: number } | null
   >(null);
+  const [completedFields, setCompletedFields] = useState<CompletedFields>({});
+  const [history, setHistory] = useState<DebtHistoryEntry[]>([]);
 
   useEffect(() => {
     if (counterparty && open) {
@@ -69,6 +76,20 @@ export function CounterpartyModal({
       setStepperError(null);
       setNotification(null);
       setStepAnim(null);
+      setCompletedFields({});
+      const curStep = counterparty.collection.find((s) => s.status === "current");
+      setHistory(
+        curStep
+          ? [
+              {
+                date: curStep.startDate ?? "—",
+                action: "Создан кейс",
+                step: curStep.title,
+                user: "NORM AI",
+              },
+            ]
+          : [],
+      );
     }
   }, [counterparty, open]);
 
@@ -245,24 +266,67 @@ export function CounterpartyModal({
     }, 0);
   };
 
+  const pushHistory = (entry: DebtHistoryEntry) =>
+    setHistory((prev) => [entry, ...prev]);
+
+  const handleFieldChange = (stepId: string, key: string, value: string) => {
+    setCompletedFields((prev) => ({
+      ...prev,
+      [stepId]: { ...(prev[stepId] ?? {}), [key]: value },
+    }));
+    setStepperError(null);
+  };
+
   const advanceStage = () => {
     setStepperError(null);
     const idx = steps.findIndex((s) => s.status === "current");
     if (idx === -1) return;
     const cur = steps[idx];
     const next = steps[idx + 1];
-    if (!next) return;
+    if (!next) {
+      setStepperError("Это последний этап процесса.");
+      return;
+    }
+
+    const curMeta = stepMetaByTitle[cur.title];
+    const curFields = completedFields[cur.id] ?? {};
+    if (curMeta?.requiredFields?.length) {
+      const missing = curMeta.requiredFields.filter((f) => !curFields[f.key]?.toString().trim());
+      if (missing.length > 0) {
+        setStepperError("Заполните обязательные данные для перехода на следующий этап.");
+        return;
+      }
+    }
+
+    // Rule 1: cannot enter "Судебная работа" stage without act of reconciliation
+    if (
+      next.stage === "Судебная работа" &&
+      cur.stage === "Досудебное урегулирование"
+    ) {
+      const reconciliationStep = steps.find((s) => s.title === "Сверка взаиморасчетов");
+      const reconciliationDone =
+        reconciliationStep &&
+        (reconciliationStep.status === "done" ||
+          !!completedFields[reconciliationStep.id]?.actSverki);
+      if (!reconciliationDone) {
+        setStepperError("Для перехода к судебной работе приложите акт сверки взаиморасчетов.");
+        return;
+      }
+    }
+    // Rule 2
     if (
       next.title === "Ведется исполнительное производство" &&
       cur.title !== "Получен судебный акт"
     ) {
-      setStepperError("Нельзя перейти к исполнительному производству без этапа «Получен судебный акт».");
+      setStepperError("Нельзя перейти к исполнительному производству без судебного акта.");
       return;
     }
+    // Rule 3
     if (next.title === "Задолженность погашена" && totalOverdue > 0) {
-      setStepperError("Нельзя закрыть кейс: остаётся просроченная задолженность.");
+      setStepperError("Нельзя закрыть кейс: остается просроченная задолженность.");
       return;
     }
+
     setSteps((prev) => {
       const arr = [...prev];
       arr[idx] = { ...arr[idx], status: "done", overdue: false };
@@ -270,14 +334,76 @@ export function CounterpartyModal({
         ...arr[idx + 1],
         status: "current",
         startDate: new Date().toLocaleDateString("ru-RU"),
-        sla: "7 дней",
-        plannedDate: new Date(Date.now() + 7 * 86400000).toLocaleDateString("ru-RU"),
+        sla: arr[idx + 1].sla ?? "7 дней",
+        plannedDate:
+          arr[idx + 1].plannedDate ??
+          new Date(Date.now() + 7 * 86400000).toLocaleDateString("ru-RU"),
         overdue: false,
         nextAction: arr[idx + 1].nextAction ?? "Запланировать следующее действие",
       };
       return arr;
     });
+    setStepAnim({ direction: "forward", tick: Date.now() });
+    pushHistory({
+      date: new Date().toLocaleDateString("ru-RU"),
+      action: "Переведен этап",
+      step: next.title,
+      user: counterparty?.risks[0]?.decision?.responsible ?? "Михайлова Екатерина",
+    });
   };
+
+  const rollbackStage = (comment: string) => {
+    setStepperError(null);
+    const idx = steps.findIndex((s) => s.status === "current");
+    if (idx <= 0) return;
+    const prevStep = steps[idx - 1];
+    setSteps((prev) =>
+      prev.map((s, i) => {
+        if (i === idx) return { ...s, status: "upcoming" as const };
+        if (i === idx - 1)
+          return {
+            ...s,
+            status: "current" as const,
+            overdue: false,
+          };
+        return s;
+      }),
+    );
+    setStepAnim({ direction: "backward", tick: Date.now() });
+    pushHistory({
+      date: new Date().toLocaleDateString("ru-RU"),
+      action: "Откат этапа",
+      step: prevStep.title,
+      user: "Михайлова Екатерина",
+      comment,
+    });
+    setNotification({
+      tone: "info",
+      text: "Этап возвращен. Комментарий сохранен в истории.",
+    });
+  };
+
+  const overdueStartDate = useMemo(() => {
+    const dates = contracts
+      .flatMap((c) => c.overdueHistory.map((h) => h.date))
+      .filter(Boolean);
+    if (dates.length === 0) return "";
+    // parse dd.mm.yyyy and pick earliest
+    const parsed = dates
+      .map((d) => {
+        const m = d.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+        return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null;
+      })
+      .filter((d): d is Date => !!d);
+    if (parsed.length === 0) return dates[0];
+    const min = parsed.reduce((a, b) => (a < b ? a : b));
+    const dd = String(min.getDate()).padStart(2, "0");
+    const mm = String(min.getMonth() + 1).padStart(2, "0");
+    return `${dd}.${mm}.${min.getFullYear()}`;
+  }, [contracts]);
+
+  const maxOverdueDays = contracts.reduce((m, c) => Math.max(m, c.overdueDays), 0);
+
 
   const advanceContractStage = (id: string) => {
     const stageOrder = [
@@ -585,8 +711,21 @@ export function CounterpartyModal({
           steps={steps}
           stepAnim={stepAnim}
           open={debtDrawerOpen}
-          onOpenChange={setDebtDrawerOpen}
+          onOpenChange={(o) => {
+            setDebtDrawerOpen(o);
+            if (!o) setStepperError(null);
+          }}
           onAdvance={advanceStage}
+          onRollback={rollbackStage}
+          onFieldChange={handleFieldChange}
+          completedFields={completedFields}
+          history={history}
+          summary={{
+            overdueAmount: `${totalOverdue.toFixed(1)} млн. ₽`,
+            overdueStartDate,
+            overdueDays: maxOverdueDays,
+            responsible: "Михайлова Екатерина",
+          }}
           error={stepperError}
         />
 
