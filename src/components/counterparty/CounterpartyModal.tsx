@@ -383,26 +383,8 @@ export function CounterpartyModal({
     });
   };
 
-  const overdueStartDate = useMemo(() => {
-    const dates = contracts
-      .flatMap((c) => c.overdueHistory.map((h) => h.date))
-      .filter(Boolean);
-    if (dates.length === 0) return "";
-    // parse dd.mm.yyyy and pick earliest
-    const parsed = dates
-      .map((d) => {
-        const m = d.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
-        return m ? new Date(+m[3], +m[2] - 1, +m[1]) : null;
-      })
-      .filter((d): d is Date => !!d);
-    if (parsed.length === 0) return dates[0];
-    const min = parsed.reduce((a, b) => (a < b ? a : b));
-    const dd = String(min.getDate()).padStart(2, "0");
-    const mm = String(min.getMonth() + 1).padStart(2, "0");
-    return `${dd}.${mm}.${min.getFullYear()}`;
-  }, [contracts]);
 
-  const maxOverdueDays = contracts.reduce((m, c) => Math.max(m, c.overdueDays), 0);
+
 
 
   const advanceContractStage = (id: string) => {
