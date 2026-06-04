@@ -259,14 +259,18 @@ export function CounterpartyModal({
                 <div className="space-y-2">
                   {visiblePending.map((r) => {
                     const p = priorityBadge[r.priority];
+                    const rm = riskMeta[r.type];
+                    const RIcon = rm?.icon;
                     return (
                       <div
                         key={r.id}
                         className="group rounded-lg border border-[#E5E7EB] bg-white px-4 py-3 transition hover:bg-muted/30"
                       >
                         <div className="flex items-start gap-3">
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-700">
-                            <AlertTriangle className="h-4 w-4" />
+                          <div
+                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${rm?.activeBorder ?? "border-amber-200"} ${rm?.activeBg ?? "bg-amber-50"}`}
+                          >
+                            {RIcon && <RIcon className={`h-4 w-4 ${rm.iconColor}`} />}
                           </div>
                           <div className="min-w-0 flex-1">
                             <div className="truncate text-sm font-medium text-foreground">
