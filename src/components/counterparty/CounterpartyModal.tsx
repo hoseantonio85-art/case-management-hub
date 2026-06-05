@@ -504,20 +504,6 @@ export function CounterpartyModal({
           <div className="bg-white px-6 pt-5">
             <AssistantSummaryCard
               onOpen={() => setAssessmentOpen(true)}
-              onRun={() => {
-                setAssessmentRunning(true);
-                setTimeout(() => {
-                  setAssessment(
-                    buildAssessment(counterparty.name, counterparty.inn, "manual"),
-                  );
-                  setAssessmentStatus("updated");
-                  setAssessmentConfirmedAt(undefined);
-                  setAssessmentDisagreement(null);
-                  setAssessmentRunning(false);
-                  setAssessmentOpen(true);
-                }, 1200);
-              }}
-              running={assessmentRunning}
               status={assessmentStatus}
               confirmedAt={assessmentConfirmedAt}
               confirmedBy={ASSESSMENT_USER}
