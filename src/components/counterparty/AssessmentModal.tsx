@@ -36,6 +36,9 @@ export function AssessmentModal({
   onOpenChange,
   status,
   disagreement,
+  defaultInn,
+  running,
+  onRun,
   onConfirm,
   onDisagree,
 }: {
@@ -44,6 +47,9 @@ export function AssessmentModal({
   onOpenChange: (o: boolean) => void;
   status: AssessmentStatus;
   disagreement: Disagreement | null;
+  defaultInn?: string;
+  running?: boolean;
+  onRun?: (inn: string) => void;
   onConfirm: () => void;
   onDisagree: (d: Disagreement) => void;
 }) {
@@ -52,6 +58,21 @@ export function AssessmentModal({
   const [disagreeText, setDisagreeText] = useState("");
   const [disagreeReason, setDisagreeReason] = useState(REASONS[0]);
   const [groupDrawer, setGroupDrawer] = useState<AssessmentGroup | null>(null);
+  const [runOpen, setRunOpen] = useState(false);
+  const [runInn, setRunInn] = useState(defaultInn ?? "");
+  const wasRunning = useState({ v: false })[0];
+
+  useEffect(() => {
+    setRunInn(defaultInn ?? "");
+  }, [defaultInn, assessment?.counterpartyName]);
+
+  useEffect(() => {
+    if (wasRunning.v && !running) {
+      setRunOpen(false);
+      setNotice({ tone: "success", text: "Оценка обновлена. Требуется подтверждение." });
+    }
+    wasRunning.v = !!running;
+  }, [running, wasRunning]);
 
   if (!assessment) return null;
 
