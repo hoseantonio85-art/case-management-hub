@@ -187,6 +187,59 @@ export function AssessmentModal({
               </div>
             )}
 
+            {runOpen && onRun && (
+              <div className="rounded-xl border border-primary/30 bg-primary/5 p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <RefreshCw className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm font-semibold text-foreground">Запустить новую оценку</div>
+                    <p className="mt-0.5 text-[11px] text-muted-foreground">
+                      Агент проверит контрагента по 43 критериям благонадёжности. Можно указать любой ИНН.
+                    </p>
+                    <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end">
+                      <div className="flex-1">
+                        <label className="text-[11px] font-medium text-muted-foreground">
+                          ИНН для оценки
+                        </label>
+                        <Input
+                          value={runInn}
+                          onChange={(e) => setRunInn(e.target.value)}
+                          placeholder="ИНН"
+                          className="mt-1 bg-white"
+                          disabled={running}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setRunOpen(false)}
+                          disabled={running}
+                        >
+                          Отмена
+                        </Button>
+                        <Button
+                          size="sm"
+                          onClick={() => runInn.trim() && onRun(runInn.trim())}
+                          disabled={running || !runInn.trim()}
+                        >
+                          {running ? (
+                            <>
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" /> Запуск…
+                            </>
+                          ) : (
+                            "Запустить"
+                          )}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Assistant summary */}
             <div className="rounded-2xl border border-border bg-white p-4">
               <div className="flex items-start gap-3">
