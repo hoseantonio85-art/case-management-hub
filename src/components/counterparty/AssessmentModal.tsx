@@ -22,7 +22,7 @@ const statusMeta: Record<
   pending: {
     label: "Требует подтверждения",
     chip: "bg-amber-100 text-amber-900",
-    headerBg: "bg-amber-50",
+    headerBg: "bg-gradient-to-b from-amber-50 via-amber-50/40 to-transparent",
   },
   confirmed: {
     label: "Подтверждена",
