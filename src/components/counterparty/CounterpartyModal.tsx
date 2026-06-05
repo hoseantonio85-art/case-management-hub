@@ -797,7 +797,13 @@ export function CounterpartyModal({
           }}
         />
       </DialogContent>
+      <AssessmentModal
+        assessment={assessment}
+        open={assessmentOpen}
+        onOpenChange={setAssessmentOpen}
+      />
     </Dialog>
+
   );
 }
 
