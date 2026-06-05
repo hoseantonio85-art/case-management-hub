@@ -70,6 +70,10 @@ export function CounterpartyModal({
   >(null);
   const [completedFields, setCompletedFields] = useState<CompletedFields>({});
   const [history, setHistory] = useState<DebtHistoryEntry[]>([]);
+  const [assessmentOpen, setAssessmentOpen] = useState(false);
+  const [assessment, setAssessment] = useState<Assessment | null>(null);
+  const [assessmentRunning, setAssessmentRunning] = useState(false);
+  const [assessmentUpdatedLabel, setAssessmentUpdatedLabel] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (counterparty && open) {
