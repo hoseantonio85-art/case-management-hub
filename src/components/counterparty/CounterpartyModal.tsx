@@ -496,6 +496,25 @@ export function CounterpartyModal({
             );
           })()}
 
+          <div className="bg-white px-6 pt-5">
+            <AssistantSummaryCard
+              onOpen={() => setAssessmentOpen(true)}
+              onRun={() => {
+                setAssessmentRunning(true);
+                setTimeout(() => {
+                  setAssessment(
+                    buildAssessment(counterparty.name, counterparty.inn, "manual"),
+                  );
+                  setAssessmentUpdatedLabel("Оценка обновлена только что");
+                  setAssessmentRunning(false);
+                  setAssessmentOpen(true);
+                }, 1200);
+              }}
+              running={assessmentRunning}
+              lastUpdatedLabel={assessmentUpdatedLabel}
+            />
+          </div>
+
           <div className="grid grid-cols-1 gap-6 bg-white px-6 py-6 lg:grid-cols-[minmax(0,1fr)_320px]">
             <div className="space-y-6 min-w-0">
             {notification && (
