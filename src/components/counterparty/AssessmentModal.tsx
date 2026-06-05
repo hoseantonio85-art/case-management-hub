@@ -199,9 +199,9 @@ export function AssessmentModal({
             )}
 
             {runOpen && onRun && (
-              <div className="rounded-xl border border-primary/30 bg-primary/5 p-4">
+              <div className="rounded-xl border border-border bg-slate-50/60 p-4">
                 <div className="flex items-start gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-white text-muted-foreground">
                     <RefreshCw className="h-4 w-4" />
                   </div>
                   <div className="min-w-0 flex-1">
