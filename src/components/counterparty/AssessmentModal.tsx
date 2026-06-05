@@ -41,6 +41,13 @@ const statusMeta: Record<
   },
 };
 
+const toneLabel: Record<"rose" | "amber" | "slate" | "emerald", string> = {
+  rose: "Критический маркер",
+  amber: "Требует согласования",
+  slate: "Потенциальный маркер",
+  emerald: "Позитивный маркер",
+};
+
 const REASONS = [
   "Данные неактуальны",
   "Источник ошибочный",
