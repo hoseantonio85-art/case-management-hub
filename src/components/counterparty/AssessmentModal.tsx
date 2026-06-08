@@ -381,8 +381,10 @@ export function AssessmentModal({
                     );
                   })}
                 </div>
+                </div>
               </section>
             </div>
+
 
             {savedDisagreement && (
               <section className="rounded-xl border border-border bg-slate-50/60 p-3.5">
