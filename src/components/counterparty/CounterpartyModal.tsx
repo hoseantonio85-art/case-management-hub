@@ -471,9 +471,9 @@ export function CounterpartyModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         style={{ width: "1320px", maxWidth: "calc(100vw - 32px)", maxHeight: "calc(100dvh - 32px)" }}
-        className="max-h-[calc(100dvh-32px)] gap-0 overflow-hidden rounded-3xl sm:rounded-3xl p-0 [&>button]:hidden sm:max-w-none"
+        className="max-h-[calc(100dvh-32px)] gap-0 overflow-y-auto rounded-3xl sm:rounded-3xl p-0 [&>button]:hidden sm:max-w-none"
       >
-        <div className="relative flex h-full flex-col overflow-y-auto">
+        <div className="relative flex flex-col">
           {/* Header */}
           {(() => {
             const tone = getToneForTag(counterparty.tag);
