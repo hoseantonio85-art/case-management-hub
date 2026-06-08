@@ -193,10 +193,6 @@ export function AssessmentModal({
                 </div>
               </div>
             </div>
-            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              <LimitCard label="Расходные сделки" sublabel="Лимит аванса" value="2,5 млн ₽" />
-              <LimitCard label="Доходные сделки" sublabel="Лимит дебиторской задолженности" value="4,8 млн ₽" />
-            </div>
           </div>
 
 
@@ -340,7 +336,12 @@ export function AssessmentModal({
               </aside>
 
               {/* Groups — left, row 2 */}
-              <section className="order-3 lg:col-start-1 lg:row-start-1">
+              <section className="order-3 lg:col-start-1 lg:row-start-1 space-y-5">
+                <div className="grid grid-cols-2 gap-3">
+                  <LimitCard label="Расходные сделки" sublabel="Лимит аванса" value="2,5 млн ₽" />
+                  <LimitCard label="Доходные сделки" sublabel="Лимит дебиторской задолженности" value="4,8 млн ₽" />
+                </div>
+                <div>
                 <h3 className="mb-2 text-sm font-semibold">Группы оценки</h3>
                 <div className="grid grid-cols-1 gap-2.5">
                   {assessment.groups.map((g) => {
@@ -380,8 +381,10 @@ export function AssessmentModal({
                     );
                   })}
                 </div>
+                </div>
               </section>
             </div>
+
 
             {savedDisagreement && (
               <section className="rounded-xl border border-border bg-slate-50/60 p-3.5">
