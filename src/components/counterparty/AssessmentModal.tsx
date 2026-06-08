@@ -162,7 +162,9 @@ export function AssessmentModal({
               {assessment.counterpartyName}
             </h2>
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span>{assessment.inn}</span>
+              <span>ИНН {assessment.inn}</span>
+              <span>·</span>
+              <span>ОГРН {defaultOgrn}</span>
               <span>·</span>
               <span>Оценка: {assessment.date}</span>
               <span>·</span>
