@@ -286,6 +286,7 @@ export function AssessmentModal({
               {/* What changed — right, spans both rows */}
               <aside className="order-2 lg:col-start-2 lg:row-span-2 lg:row-start-1">
                 <div className="space-y-3 lg:sticky lg:top-0">
+                  <RegistrationInfoWidget />
                   <div className="rounded-2xl border border-border bg-white p-4">
                     <div className="flex items-center justify-between">
                       <div>
