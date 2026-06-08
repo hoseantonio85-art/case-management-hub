@@ -281,28 +281,9 @@ export function AssessmentModal({
             )}
 
             <div className="grid gap-y-5 gap-x-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-x-12">
-              {/* Assistant summary — left, row 1 */}
-              <div className="order-1 lg:col-start-1 lg:row-start-1">
-                <div className="rounded-2xl border border-border bg-white p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600">
-                      <Sparkles className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-                        NORM AI · Резюме оценки
-                      </div>
-                      <p className="mt-1 text-sm leading-snug text-foreground">{assessment.summary}</p>
-                      <p className="mt-2 text-[11px] text-muted-foreground">
-                        Выявленные критерии могут быть использованы как основание для сигналов риска.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {/* What changed — right column */}
+              <aside className="order-2 lg:col-start-2 lg:row-start-1">
 
-              {/* What changed — right, spans both rows */}
-              <aside className="order-2 lg:col-start-2 lg:row-span-2 lg:row-start-1">
                 <div className="space-y-3 lg:sticky lg:top-0">
                   <RegistrationInfoWidget />
                   <div className="rounded-2xl border border-border bg-white p-4">
