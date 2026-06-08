@@ -183,6 +183,10 @@ export function AssessmentModal({
                 </>
               )}
             </div>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <HeaderStat label="Критериев выявлено" value={totals.detected} />
+              <HeaderStat label="Требуют внимания" value={totals.attention} accent={totals.attention > 0} />
+            </div>
           </div>
 
           {/* Body */}
