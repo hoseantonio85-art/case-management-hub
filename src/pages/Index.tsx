@@ -214,6 +214,35 @@ export default function Index() {
   const [active, setActive] = useState<Counterparty | null>(null);
   const [filter, setFilter] = useState<CategoryKey | null>(null);
   const [riskFilter, setRiskFilter] = useState<RiskChipKey>("all");
+  const [runDialogOpen, setRunDialogOpen] = useState(false);
+  const [runInn, setRunInn] = useState("");
+  const [runError, setRunError] = useState<string | null>(null);
+  const [runLoading, setRunLoading] = useState(false);
+  const [manualAssessment, setManualAssessment] = useState<Assessment | null>(null);
+  const [manualAssessmentOpen, setManualAssessmentOpen] = useState(false);
+  const [manualStatus, setManualStatus] = useState<AssessmentStatus>("updated");
+  const [manualDisagreement, setManualDisagreement] = useState<Disagreement | null>(null);
+
+  const handleStartAssessment = () => {
+    const inn = runInn.trim();
+    if (!inn) {
+      setRunError("Введите ИНН контрагента");
+      return;
+    }
+    setRunError(null);
+    setRunLoading(true);
+    setTimeout(() => {
+      const today = new Date().toLocaleDateString("ru-RU");
+      setManualAssessment(buildAssessment("Новый контрагент", inn, "manual", today));
+      setManualStatus("updated");
+      setManualDisagreement(null);
+      setRunLoading(false);
+      setRunDialogOpen(false);
+      setManualAssessmentOpen(true);
+      setRunInn("");
+    }, 1500);
+  };
+
 
   const byCategory = useMemo(() => {
     if (!filter) return counterparties;
