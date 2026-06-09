@@ -308,17 +308,23 @@ export function AssessmentModal({
                         </div>
                       ) : (
                         <ul className="divide-y divide-border">
-                          {assessment.changes.map((c, i) => (
-                            <li key={i} className="flex items-start gap-2.5 py-2.5 first:pt-0 last:pb-0">
-                              <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${toneStyles[c.tone].dot}`} />
-                              <div className="min-w-0 flex-1">
-                                <div className="text-xs leading-snug text-foreground">{c.text}</div>
-                                <div className="mt-0.5 text-[10px] text-muted-foreground">
-                                  {toneLabel[c.tone]}
+                          {assessment.changes.map((c, i) => {
+                            const Ico = changeIcon[c.tone];
+                            const cls = changeIconClass[c.tone];
+                            return (
+                              <li key={i} className="flex items-start gap-2.5 py-2.5 first:pt-0 last:pb-0">
+                                <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${cls.bg}`}>
+                                  <Ico className={`h-3.5 w-3.5 ${cls.text}`} />
+                                </span>
+                                <div className="min-w-0 flex-1">
+                                  <div className="text-xs leading-snug text-foreground">{c.text}</div>
+                                  <div className="mt-0.5 text-[10px] text-muted-foreground">
+                                    {toneLabel[c.tone]}
+                                  </div>
                                 </div>
-                              </div>
-                            </li>
-                          ))}
+                              </li>
+                            );
+                          })}
                         </ul>
                       )}
                     </div>
