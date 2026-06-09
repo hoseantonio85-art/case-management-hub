@@ -78,6 +78,7 @@ export function CounterpartyModal({
   const [assessmentStatus, setAssessmentStatus] = useState<AssessmentStatus>("pending");
   const [assessmentConfirmedAt, setAssessmentConfirmedAt] = useState<string | undefined>(undefined);
   const [assessmentDisagreement, setAssessmentDisagreement] = useState<Disagreement | null>(null);
+  const [registrationOpen, setRegistrationOpen] = useState(false);
   const ASSESSMENT_USER = "Михайлова Екатерина";
 
   useEffect(() => {
