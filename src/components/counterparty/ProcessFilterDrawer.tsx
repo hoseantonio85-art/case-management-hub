@@ -81,28 +81,15 @@ export function ProcessFilterDrawer({
                   )}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="flex shrink-0 items-center gap-2">
-                      <span
-                        className={cn(
-                          "flex h-9 w-9 items-center justify-center rounded-full border text-xs font-semibold tabular-nums",
-                          selected
-                            ? `${m.accentBorder} ${m.accentBg} ${m.accentText}`
-                            : "border-slate-200 bg-slate-50 text-slate-600",
-                        )}
-                      >
-                        {String(m.step).padStart(2, "0")}
-                      </span>
-                      <span
-                        className={cn(
-                          "flex h-9 w-9 items-center justify-center rounded-full border",
-                          selected
-                            ? `${m.accentBorder} ${m.accentBg} ${m.accentText}`
-                            : "border-slate-200 bg-white text-slate-500",
-                        )}
-                      >
-                        <Icon className="h-4 w-4" />
-                      </span>
-                    </div>
+                    <span
+                      className={cn(
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-full",
+                        m.accentBg,
+                        m.accentText,
+                      )}
+                    >
+                      <Icon className="h-[18px] w-[18px]" />
+                    </span>
 
                     <div className="min-w-0 flex-1">
                       <div className="flex items-start justify-between gap-2">
@@ -125,11 +112,6 @@ export function ProcessFilterDrawer({
                           <span>Суд</span>
                           <span className="opacity-50">→</span>
                           <span>Банкротство</span>
-                        </div>
-                      )}
-                      {key === "writeoff" && (
-                        <div className="mt-2 text-[11px] text-muted-foreground">
-                          Основание: копилка
                         </div>
                       )}
                     </div>
