@@ -158,26 +158,13 @@ export function AssessmentModal({
                 {meta.label}
               </span>
             </div>
-            <h2 className="mt-3 text-xl font-semibold tracking-tight text-foreground">
+            <h2 className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
               Оценка контрагента
             </h2>
-            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-              <span>{assessment.counterpartyName}</span>
-              <span>·</span>
-              <span>ИНН {assessment.inn}</span>
-              <span>·</span>
-              <span>ОГРН {defaultOgrn}</span>
-              <span>·</span>
-              <span>Оценка: {assessment.date}</span>
-              <span>·</span>
-              <span>{sourceLabel}</span>
-              {assessment.nextCheck && (
-                <>
-                  <span>·</span>
-                  <span>Следующая проверка: {assessment.nextCheck}</span>
-                </>
-              )}
-              <span>·</span>
+            <div className="mt-1 text-sm text-muted-foreground">
+              {assessment.counterpartyName} · ИНН {assessment.inn} · ОГРН {defaultOgrn} · Оценка: {assessment.date} · {sourceLabel}
+              {assessment.nextCheck && <> · Следующая проверка: {assessment.nextCheck}</>}
+              {" · "}
               <button
                 type="button"
                 onClick={() => setRegistrationOpen(true)}
@@ -524,7 +511,7 @@ function CountPill({ kind, count }: { kind: AssessmentCountKind; count: number }
   const m = assessmentCountMeta[kind];
   const Ico = m.icon;
   return (
-    <span className={`inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-sm font-semibold ${m.bg}`}>
+    <span className={`inline-flex h-6 items-center gap-1 rounded-full px-2.5 text-xs font-semibold ${m.bg}`}>
       <Ico className={`h-3.5 w-3.5 ${m.icon_color}`} />
       <span className={`leading-none ${m.num}`}>{count}</span>
     </span>
