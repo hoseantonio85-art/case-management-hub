@@ -186,20 +186,21 @@ export function AssessmentModal({
                 Подробнее
               </button>
             </div>
-            <div className="mt-5 rounded-2xl border border-border bg-white/75 p-4">
+            <div className="mt-5 rounded-2xl border border-rose-100/70 bg-gradient-to-br from-white via-rose-50/35 to-amber-50/30 p-4">
               <div className="flex items-start gap-3">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600">
                   <Sparkles className="h-4 w-4" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <span className="inline-flex items-center rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-medium text-rose-700">
-                    Резолюция: не заключать сделки
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-rose-50 to-amber-50 px-3 py-1 text-xs font-semibold text-rose-700">
+                    <AlertTriangle className="h-3.5 w-3.5 text-rose-500" />
+                    Не заключать сделки
                   </span>
                   <div className="mt-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-                    NORM AI · Вывод по оценке
+                    Вывод NORM AI
                   </div>
-                  <p className="mt-1 text-sm leading-snug text-foreground">
-                    Я проверил контрагента по 43 критериям благонадёжности. Сейчас не рекомендую заключать новые сделки: выявлены критичные маркеры по юридическому статусу, признаки налоговой задолженности и повышенная доля вычитаемого НДС. Дополнительно есть репутационные и судебные факторы, которые требуют проверки перед согласованием лимитов. Сначала разберите критерии в группах «Юридический статус и правоспособность», «Финансы и налоги» и «Судебная нагрузка и репутация», затем подтвердите или оспорьте оценку.
+                  <p className="mt-1.5 text-sm leading-snug text-foreground">
+                    Проверка по 43 критериям выявила несколько маркеров, которые блокируют безопасное согласование сделки: ограничения ФНС по счетам, налоговая задолженность и повышенная доля вычитаемого НДС. Дополнительно есть судебные и репутационные факторы, поэтому сначала стоит разобрать группы «Юридический статус», «Финансы и налоги» и «Судебная нагрузка».
                   </p>
                 </div>
               </div>
