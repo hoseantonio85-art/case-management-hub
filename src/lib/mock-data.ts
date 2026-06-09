@@ -208,6 +208,7 @@ export const counterparties: Counterparty[] = [
       },
     ],
     collection: makeCollection("Сверка взаиморасчетов", { startDate: "28.05.2026", sla: "10 дней", plannedDate: "07.06.2026", overdue: false, nextAction: "Получить подписанный акт сверки" }),
+    processStage: "settlement",
   },
   {
     id: "gamma",
@@ -227,6 +228,7 @@ export const counterparties: Counterparty[] = [
     ],
     risks: [],
     collection: makeCollection("Коммуникация с должником", { startDate: "20.05.2026", sla: "7 дней", plannedDate: "27.05.2026", overdue: true, nextAction: "Направить повторное требование" }),
+    processStage: "writeoff",
   },
   {
     id: "delta",
@@ -261,6 +263,7 @@ export const counterparties: Counterparty[] = [
       },
     ],
     collection: makeCollection("Коммуникация с должником", { startDate: "15.05.2026", sla: "14 дней", plannedDate: "29.05.2026", overdue: false, nextAction: "Запросить документы по обеспечению" }),
+    processStage: "risk_confirmation",
   },
   {
     id: "sigma",
@@ -293,6 +296,7 @@ export const counterparties: Counterparty[] = [
       },
     ],
     collection: makeCollection(null),
+    processStage: "monitoring",
   },
   {
     id: "vector",
@@ -337,6 +341,7 @@ export const counterparties: Counterparty[] = [
       },
     ],
     collection: makeCollection(null),
+    processStage: "risk_confirmation",
   },
 ];
 
