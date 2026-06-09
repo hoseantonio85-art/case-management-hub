@@ -813,6 +813,14 @@ export function CounterpartyModal({
             });
           }}
         />
+
+        <RegistrationInfoDrawer
+          open={registrationOpen}
+          onOpenChange={setRegistrationOpen}
+          counterpartyName={counterparty.name}
+          inn={counterparty.inn}
+          ogrn={defaultOgrn}
+        />
       </DialogContent>
       <AssessmentModal
         assessment={assessment}
