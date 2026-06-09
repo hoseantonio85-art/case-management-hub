@@ -44,7 +44,7 @@ export const processMeta: Record<ProcessStage, ProcessMeta> = {
     icon: ShieldAlert,
     allowedCategories: ["risk"],
     accentBg: "bg-amber-50",
-    accentText: "text-amber-700",
+    accentText: "text-amber-600",
     accentBorder: "border-amber-200",
     selectedBorder: "border-amber-400",
     selectedBg: "bg-amber-50/60",
