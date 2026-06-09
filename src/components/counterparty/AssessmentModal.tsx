@@ -364,11 +364,11 @@ export function AssessmentModal({
                       <button
                         key={g.id}
                         onClick={() => setGroupDrawer(g)}
-                        className="group flex items-center gap-3 rounded-lg border border-border bg-white px-3.5 py-3.5 text-left transition hover:bg-muted/30"
+                        className="group flex items-center gap-3 rounded-lg border border-border bg-white px-3 py-3 text-left transition hover:bg-muted/30"
                       >
                         <div className="min-w-0 flex-1">
                           <div className="text-sm font-medium text-foreground">{g.title}</div>
-                          <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                          <div className="mt-2 flex flex-wrap items-center gap-1.5">
                             <CountPill
                               kind="attention"
                               count={counts.attention}
@@ -532,9 +532,9 @@ function CountPill({ kind, count }: { kind: "attention" | "info" | "clear"; coun
   const s = pillStyles[kind];
   const Ico = pillIcon[kind];
   return (
-    <span className={`inline-flex h-10 items-center gap-2.5 rounded-full px-4 ${s.bg}`}>
-      <Ico className={`h-4 w-4 ${s.icon}`} />
-      <span className={`text-lg font-semibold leading-none ${s.num}`}>{count}</span>
+    <span className={`inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-sm font-semibold ${s.bg}`}>
+      <Ico className={`h-3.5 w-3.5 ${s.icon}`} />
+      <span className={`leading-none ${s.num}`}>{count}</span>
     </span>
   );
 }
