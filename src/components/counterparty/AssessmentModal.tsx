@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { X, Sparkles, CheckCircle2, AlertTriangle, Download, ChevronRight, Info, RefreshCw, Loader2 } from "lucide-react";
+import { X, Sparkles, CheckCircle2, AlertTriangle, Download, ChevronRight, Info, RefreshCw, Loader2, Flame, Zap } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
