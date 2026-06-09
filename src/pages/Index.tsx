@@ -727,20 +727,26 @@ export default function Index() {
               })}
             </div>
 
-            {/* Floating CTA */}
-            <div className="sticky bottom-6 z-30 mt-8 flex justify-center pointer-events-none">
-              <Button
-                onClick={() => {
-                  setRunInn("");
-                  setRunError(null);
-                  setRunDialogOpen(true);
-                }}
-                className="pointer-events-auto h-12 gap-2 rounded-full px-6 text-sm font-semibold shadow-lg shadow-primary/25"
-              >
-                <Sparkles className="h-4 w-4" />
-                Оценить контрагента
-              </Button>
-            </div>
+            {/* Bottom padding so last card is not hidden under fixed CTA */}
+            <div className="pb-28" />
+          </div>
+        </main>
+      </div>
+
+      {/* Floating CTA — pinned to bottom of main work area, independent of list height */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-6 z-30 flex justify-center lg:left-64">
+        <Button
+          onClick={() => {
+            setRunInn("");
+            setRunError(null);
+            setRunDialogOpen(true);
+          }}
+          className="pointer-events-auto h-12 gap-2 rounded-full px-6 text-sm font-semibold shadow-lg shadow-primary/25"
+        >
+          <Sparkles className="h-4 w-4" />
+          Оценить контрагента
+        </Button>
+      </div>
 
           </div>
         </main>
