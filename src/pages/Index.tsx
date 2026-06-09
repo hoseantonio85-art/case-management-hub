@@ -733,6 +733,14 @@ export default function Index() {
           setManualStatus("disagreed");
         }}
       />
+
+      <ProcessFilterDrawer
+        open={processDrawerOpen}
+        onOpenChange={setProcessDrawerOpen}
+        value={processStage}
+        onApply={applyProcessStage}
+        counts={processCounts}
+      />
     </div>
   );
 }
